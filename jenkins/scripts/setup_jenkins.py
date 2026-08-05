@@ -96,6 +96,7 @@ import jenkins.branch.*
 import org.jenkinsci.plugins.workflow.multibranch.*
 import com.cloudbees.hudson.plugins.folder.*
 import org.jenkinsci.plugins.github_branch_source.*
+import jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait
 
 def folder = Jenkins.instance.getItem('devops-exam-app')
 if (folder == null) {
