@@ -1,0 +1,19 @@
+groups:
+  - name: exam
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Target {{ $labels.instance }} down"
+          description: "Job {{ $labels.job }} has been down for 2 minutes."
+
+      - alert: HighAppRequestRate
+        expr: rate(app_http_requests_total[5m]) > 50
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request rate on devops-exam-app"

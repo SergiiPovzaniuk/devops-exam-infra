@@ -1,0 +1,69 @@
+---
+- name: Install ufw
+  apt:
+    name: ufw
+    state: present
+
+- name: Default deny incoming
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: Default allow outgoing
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: Allow SSH
+  ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+
+- name: Allow K8s API on control plane
+  ufw:
+    rule: allow
+    port: "6443"
+    proto: tcp
+  when: "'control_plane' in group_names"
+
+- name: Allow NodePort app
+  ufw:
+    rule: allow
+    port: "30080"
+    proto: tcp
+
+- name: Allow node exporter
+  ufw:
+    rule: allow
+    port: "9100"
+    proto: tcp
+
+- name: Allow flannel / cluster overlay
+  ufw:
+    rule: allow
+    port: "8472"
+    proto: udp
+
+- name: Allow kubelet
+  ufw:
+    rule: allow
+    port: "10250"
+    proto: tcp
+
+- name: Allow etcd on control plane
+  ufw:
+    rule: allow
+    port: "2379:2380"
+    proto: tcp
+  when: "'control_plane' in group_names"
+
+- name: Allow all from VPC peers
+  ufw:
+    rule: allow
+    from_ip: "{{ item }}"
+  loop: "{{ groups['k8s'] | map('extract', hostvars, 'ansible_host') | list }}"
+
+- name: Enable ufw
+  ufw:
+    state: enabled

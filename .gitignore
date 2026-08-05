@@ -1,0 +1,17 @@
+.env
+*.pem
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+override.tf
+*_override.tf
+ansible/inventory/hosts.ini
+ansible/files/kubeconfig
+*.kubeconfig
+.idea/
+.vscode/
+__pycache__/
+*.retry
+secrets/

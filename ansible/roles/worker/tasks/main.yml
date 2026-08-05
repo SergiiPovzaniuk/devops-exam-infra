@@ -1,0 +1,9 @@
+---
+- name: Check if already joined
+  stat:
+    path: /etc/kubernetes/kubelet.conf
+  register: kubelet_conf
+
+- name: Join cluster
+  command: "{{ hostvars[groups['control_plane'][0]].k8s_join_command }}"
+  when: not kubelet_conf.stat.exists

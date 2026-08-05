@@ -1,0 +1,7 @@
+aws_region        = "eu-central-1"
+az                = "eu-central-1a"
+instance_type     = "t3.small"
+key_name          = "devops-exam"
+public_key_path   = "~/.ssh/devops-exam.pub"
+ssh_cidr          = "0.0.0.0/0"
+monitoring_cidr   = "0.0.0.0/0"

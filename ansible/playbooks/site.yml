@@ -1,0 +1,27 @@
+---
+- name: Base node prep
+  hosts: k8s
+  become: true
+  roles:
+    - common
+    - firewall
+    - containerd
+    - kubernetes
+
+- name: Init control plane
+  hosts: control_plane
+  become: true
+  roles:
+    - control_plane
+
+- name: Join workers
+  hosts: workers
+  become: true
+  roles:
+    - worker
+
+- name: Install node exporter
+  hosts: k8s
+  become: true
+  roles:
+    - node_exporter

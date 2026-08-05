@@ -1,0 +1,31 @@
+jenkins:
+  systemMessage: "DevOps exam Jenkins"
+  numExecutors: 2
+  clouds: []
+  nodes:
+    - permanent:
+        name: "exam-agent"
+        labelString: "exam docker"
+        remoteFS: "/home/jenkins/agent"
+        numExecutors: 2
+        mode: NORMAL
+        retentionStrategy: "always"
+        launcher:
+          jnlp:
+            workDirSettings:
+              disabled: false
+              failIfWorkDirIsMissing: false
+              internalDir: "remoting"
+
+jobs:
+  - file: /var/jenkins_home/casc_configs/jobs/folder.groovy
+  - file: /var/jenkins_home/casc_configs/jobs/multibranch.groovy
+
+unclassified:
+  location:
+    url: "http://192.168.32.70:8080/"
+  email-ext:
+    mailAccount:
+      smtpHost: "localhost"
+    defaultSubject: "Jenkins $PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS"
+    defaultBody: "$PROJECT_NAME build $BUILD_NUMBER: $BUILD_STATUS\n$BUILD_URL"
