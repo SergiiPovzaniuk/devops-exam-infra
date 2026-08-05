@@ -7,6 +7,8 @@ IaC and platform config for the DevOps diploma exam.
 - Jenkins: folder `devops-exam-app` + Multibranch + JCasC
 - Monitoring: Prometheus / Grafana / Alertmanager / Loki configs for host `192.168.32.80`
 
+Live cluster details: [docs/LIVE.md](docs/LIVE.md)
+
 ## Bootstrap (few commands)
 
 ```bash
