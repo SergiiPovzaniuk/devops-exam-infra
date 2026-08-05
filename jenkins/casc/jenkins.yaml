@@ -20,6 +20,7 @@ jenkins:
 jobs:
   - file: /var/jenkins_home/casc_configs/jobs/folder.groovy
   - file: /var/jenkins_home/casc_configs/jobs/multibranch.groovy
+# develop auto; main NoTrigger — applied by jenkins/scripts/setup_jenkins.py
 
 unclassified:
   location:

@@ -18,6 +18,10 @@ output "ssh_user" {
   value = "ubuntu"
 }
 
+output "lb_dns_name" {
+  value = aws_lb.app.dns_name
+}
+
 output "app_url" {
-  value = "http://${module.control_plane.public_ip}:30080"
+  value = "http://${aws_lb.app.dns_name}"
 }

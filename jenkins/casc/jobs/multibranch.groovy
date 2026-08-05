@@ -1,6 +1,6 @@
 multibranchPipelineJob('devops-exam-app/pipeline') {
   displayName('pipeline')
-  description('Any branch: test/build/publish. main: also deploy.')
+  description('develop: auto CI/CD. main: manual only.')
   branchSources {
     branchSource {
       source {
