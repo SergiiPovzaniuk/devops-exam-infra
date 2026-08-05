@@ -11,6 +11,7 @@ terraform.tfvars
 ansible/inventory/hosts.ini
 ansible/files/kubeconfig
 *.kubeconfig
+.ci/
 .idea/
 .vscode/
 __pycache__/

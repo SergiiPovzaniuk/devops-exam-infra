@@ -12,6 +12,8 @@ PASS = os.environ.get("JENKINS_PASSWORD", "admin-change-me")
 GH = os.environ.get("GITHUB_TOKEN", "")
 DH_USER = os.environ.get("DOCKER_HUB_USERNAME", "sergejpovzaniuk")
 DH_PASS = os.environ.get("DOCKER_HUB_ACCESS_TOKEN", "")
+AWS_KEY = os.environ.get("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 KUBECONFIG = os.environ.get(
     "KUBECONFIG_PATH",
     r"c:\Users\sergi\devops_diploma\devops-exam-infra\ansible\files\kubeconfig",
@@ -62,6 +64,7 @@ def upsert = {{ id, cred ->
 }}
 upsert('github-token', new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL, 'github-token', 'GitHub PAT', 'SergiiPovzaniuk', '{GH}'))
 upsert('dockerhub', new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL, 'dockerhub', 'Docker Hub', '{DH_USER}', '{DH_PASS}'))
+upsert('aws-exam', new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL, 'aws-exam', 'AWS exam', '{AWS_KEY}', '{AWS_SECRET}'))
 println 'creds-ok'
 """
         )
@@ -146,6 +149,51 @@ Jenkins.instance.save()
 
 job.scheduleBuild2(0)
 println 'job-ok develop=auto main=NoTrigger'
+"""
+        )
+    )
+
+    print(
+        script(
+            r"""
+import jenkins.model.*
+import com.cloudbees.hudson.plugins.folder.*
+import org.jenkinsci.plugins.workflow.job.*
+import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition
+import hudson.plugins.git.GitSCM
+import hudson.plugins.git.BranchSpec
+import hudson.plugins.git.UserRemoteConfig
+import hudson.triggers.SCMTrigger
+
+def folder = Jenkins.instance.getItem('devops-exam-infra')
+if (folder == null) {
+  folder = Jenkins.instance.createProject(Folder.class, 'devops-exam-infra')
+  folder.description = 'Infra jobs (manual)'
+  folder.save()
+}
+
+def name = 'destroy'
+def job = folder.getItem(name)
+if (job == null) {
+  job = folder.createProject(WorkflowJob.class, name)
+}
+job.setDescription('Manual terraform destroy. Requires CONFIRM_DESTROY=true.')
+
+def remote = new UserRemoteConfig(
+  'https://github.com/SergiiPovzaniuk/devops-exam-infra.git',
+  null, null, 'github-token'
+)
+def scm = new GitSCM(
+  [remote],
+  [new BranchSpec('*/main')],
+  false, [], null, null, []
+)
+def defn = new CpsScmFlowDefinition(scm, 'Jenkinsfile.destroy')
+defn.setLightweight(true)
+job.setDefinition(defn)
+job.setTriggers([])
+job.save()
+println 'destroy-job-ok manual-only'
 """
         )
     )

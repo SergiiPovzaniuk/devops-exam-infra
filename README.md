@@ -41,8 +41,14 @@ Grafana: http://192.168.32.80:3000 (admin / see host `.env`)
 
 ## Destroy
 
+**Jenkins (manual):** `devops-exam-infra` → `destroy` → Build with Parameters → `CONFIRM_DESTROY=true`.
+
+Or locally:
+
 ```bash
 cd terraform/envs/exam && terraform destroy -auto-approve
+# optional:
+cd ../bootstrap && terraform destroy -auto-approve
 ```
 
 ## Layout
