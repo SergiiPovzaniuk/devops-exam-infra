@@ -3,10 +3,11 @@
 *.tfstate
 *.tfstate.*
 .terraform/
-.terraform.lock.hcl
 crash.log
 override.tf
 *_override.tf
+terraform.tfvars
+**/terraform.tfvars
 ansible/inventory/hosts.ini
 ansible/files/kubeconfig
 *.kubeconfig

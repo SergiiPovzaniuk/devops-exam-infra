@@ -1,13 +1,19 @@
 ---
-- name: Add Kubernetes apt key
-  apt_key:
+- name: Ensure keyrings dir
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Download Kubernetes apt key
+  get_url:
     url: https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/deb/Release.key
-    keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    state: present
+    dest: /etc/apt/keyrings/kubernetes-apt-keyring.asc
+    mode: "0644"
 
 - name: Add Kubernetes apt repo
   apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/deb/ /"
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/deb/ /"
     filename: kubernetes
     state: present
 

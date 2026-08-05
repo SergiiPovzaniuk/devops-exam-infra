@@ -58,11 +58,10 @@
     proto: tcp
   when: "'control_plane' in group_names"
 
-- name: Allow all from VPC peers
+- name: Allow all from VPC CIDR
   ufw:
     rule: allow
-    from_ip: "{{ item }}"
-  loop: "{{ groups['k8s'] | map('extract', hostvars, 'ansible_host') | list }}"
+    from_ip: "10.42.0.0/16"
 
 - name: Enable ufw
   ufw:

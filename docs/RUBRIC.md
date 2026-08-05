@@ -29,3 +29,4 @@
 | Alertmanager | `monitoring/alertmanager/` |
 | Loki | promtail config |
 | Unit tests | `devops-exam-app/tests` |
+| Domain + SSL (optional) | Free path: cert-manager + nip.io on NodePort/Ingress if public HTTP works — see `docs/SSL.md` |
