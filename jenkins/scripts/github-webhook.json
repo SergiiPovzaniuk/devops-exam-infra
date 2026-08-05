@@ -1,0 +1,10 @@
+{
+  "name": "web",
+  "active": true,
+  "events": ["push", "pull_request"],
+  "config": {
+    "url": "https://smee.io/MKMit7OMtF4nBA7k",
+    "content_type": "json",
+    "insecure_ssl": "0"
+  }
+}

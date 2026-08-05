@@ -201,3 +201,9 @@ println 'destroy-job-ok manual-only'
 
 if __name__ == "__main__":
     main()
+    try:
+        import setup_webhook
+
+        setup_webhook.main()
+    except Exception as e:
+        print("webhook-setup-skip:", e)
