@@ -23,8 +23,6 @@ GitHub push/PR → https://jenkins.iba-expert.uk/github-webhook/ → Multibranch
 python jenkins/scripts/setup_webhook.py
 ```
 
-Optional LAN relay (only if public HTTPS is down): `install_smee_relay.sh`
-
 ## App — `devops-exam-app/pipeline`
 
 | Branch | SCM trigger | Deploy |

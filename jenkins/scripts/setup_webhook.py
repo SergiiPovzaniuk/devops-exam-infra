@@ -52,7 +52,7 @@ def main():
     existing = None
     for h in hooks:
         cfg_url = h.get("config", {}).get("url", "")
-        if "github-webhook" in cfg_url or "smee.io" in cfg_url or cfg_url == HOOK_URL:
+        if "github-webhook" in cfg_url or cfg_url == HOOK_URL:
             existing = h
             break
 

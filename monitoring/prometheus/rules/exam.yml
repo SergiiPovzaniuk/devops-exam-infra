@@ -1,19 +1,43 @@
 groups:
   - name: exam
     rules:
-      - alert: InstanceDown
-        expr: up == 0
-        for: 2m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Target {{ $labels.instance }} down"
-          description: "Job {{ $labels.job }} has been down for 2 minutes."
-
-      - alert: HighAppRequestRate
-        expr: rate(app_http_requests_total[5m]) > 50
-        for: 5m
+      - alert: HighCpuUsage
+        expr: |
+          100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle",env="exam"}[1m])) * 100) > 40
+        for: 0s
         labels:
           severity: warning
+          env: exam
+        annotations:
+          summary: "High CPU on EC2 {{ $labels.instance }}"
+          description: "CPU usage on {{ $labels.instance }} is above 40%."
+
+      - alert: CriticalCpuUsage
+        expr: |
+          100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle",env="exam"}[1m])) * 100) > 85
+        for: 0s
+        labels:
+          severity: critical
+          env: exam
+        annotations:
+          summary: "Critical CPU on EC2 {{ $labels.instance }}"
+          description: "CPU usage on {{ $labels.instance }} is above 85%."
+
+      - alert: InstanceDown
+        expr: up{env="exam"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          env: exam
+        annotations:
+          summary: "Target {{ $labels.instance }} down"
+          description: "Job {{ $labels.job }} / {{ $labels.instance }} is down."
+
+      - alert: HighAppRequestRate
+        expr: rate(app_http_requests_total{env="exam"}[5m]) > 50
+        for: 1m
+        labels:
+          severity: warning
+          env: exam
         annotations:
           summary: "High request rate on devops-exam-app"
