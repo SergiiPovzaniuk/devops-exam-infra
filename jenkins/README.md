@@ -7,13 +7,11 @@ python jenkins/scripts/setup_webhook.py   # GitHub → Jenkins webhook
 
 ## Webhook (required for auto develop builds)
 
-Flow:
+Jenkins public URL: **https://jenkins.iba-expert.uk/**
 
 ```text
-GitHub push/PR → https://smee.io/MKMit7OMtF4nBA7k → smee container on Jenkins host → http://127.0.0.1:8080/github-webhook/
+GitHub push/PR → https://jenkins.iba-expert.uk/github-webhook/ → Multibranch
 ```
-
-(Direct public `46.174.75.130:8888` is not reachable from the internet; Smee relays events into the LAN.)
 
 | Event | Effect |
 |-------|--------|
@@ -22,13 +20,10 @@ GitHub push/PR → https://smee.io/MKMit7OMtF4nBA7k → smee container on Jenkin
 | `pull_request` | Delivered; branch filter still applies |
 
 ```bash
-# on your PC (with GITHUB_TOKEN)
 python jenkins/scripts/setup_webhook.py
-
-# on Jenkins host once
-bash jenkins/scripts/install_smee_relay.sh
-# or: ssh user@192.168.32.70 '...'
 ```
+
+Optional LAN relay (only if public HTTPS is down): `install_smee_relay.sh`
 
 ## App — `devops-exam-app/pipeline`
 

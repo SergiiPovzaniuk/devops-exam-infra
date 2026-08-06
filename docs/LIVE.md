@@ -17,8 +17,9 @@
 
 | Service | URL |
 |---------|-----|
-| Jenkins | http://192.168.32.70:8080 |
-| Folder | http://192.168.32.70:8080/job/devops-exam-app/ |
+| Jenkins | https://jenkins.iba-expert.uk/ |
+| Folder | https://jenkins.iba-expert.uk/job/devops-exam-app/ |
+| LAN (optional) | http://192.168.32.70:8080 |
 | Prometheus | http://192.168.32.80:9090 |
 | Grafana | http://192.168.32.80:3000 |
 | Alertmanager | http://192.168.32.80:9093 |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Point GitHub webhook at Smee (or public Jenkins URL) for push/PR events."""
+"""Point GitHub webhook at public Jenkins /github-webhook/."""
 import json
 import os
 import urllib.error
@@ -7,10 +7,9 @@ import urllib.request
 
 REPO = os.environ.get("GITHUB_REPO", "SergiiPovzaniuk/devops-exam-app")
 TOKEN = os.environ["GITHUB_TOKEN"]
-# Public URL GitHub can reach. Default: Smee relay → Jenkins LAN.
 HOOK_URL = os.environ.get(
     "JENKINS_WEBHOOK_URL",
-    "https://smee.io/MKMit7OMtF4nBA7k",
+    "https://jenkins.iba-expert.uk/github-webhook/",
 )
 
 
@@ -58,13 +57,13 @@ def main():
             break
 
     if existing:
-        status, body = api("PATCH", f"/repos/{REPO}/hooks/{existing['id']}", payload)
+        status, _ = api("PATCH", f"/repos/{REPO}/hooks/{existing['id']}", payload)
         print("updated", existing["id"], status, HOOK_URL)
     else:
-        status, body = api("POST", f"/repos/{REPO}/hooks", payload)
+        status, _ = api("POST", f"/repos/{REPO}/hooks", payload)
         print("created", status, HOOK_URL)
 
-    status, hooks = api("GET", f"/repos/{REPO}/hooks")
+    _, hooks = api("GET", f"/repos/{REPO}/hooks")
     for h in hooks:
         print(h["id"], h["config"].get("url"), h.get("events"), h.get("last_response"))
 
