@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
-PUBLIC_IP=63.184.114.206
-PRIVATE_IP=10.42.1.175
+PUBLIC_IP=52.59.86.56
+PRIVATE_IP=10.42.1.75
 KEY=${1:-$HOME/.ssh/devops-exam}
 
 ssh -o StrictHostKeyChecking=no -i "$KEY" "ubuntu@${PUBLIC_IP}" "PUBLIC_IP=$PUBLIC_IP PRIVATE_IP=$PRIVATE_IP bash -s" <<'EOS'
@@ -12,10 +12,11 @@ if [ ! -f /etc/kubernetes/manifests/kube-apiserver.yaml ]; then
   done
 fi
 sudo ls -la /etc/kubernetes/manifests/
+K8S_VER=$(kubeadm version -o short)
 cat <<CFG | sudo tee /tmp/kubeadm-new.yaml >/dev/null
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
-kubernetesVersion: v1.29.15
+kubernetesVersion: ${K8S_VER}
 controlPlaneEndpoint: ${PRIVATE_IP}:6443
 networking:
   podSubnet: 10.244.0.0/16
@@ -43,6 +44,9 @@ done
 sudo kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes
 EOS
 
-# verify from outside with public IP
+KC=/mnt/c/Users/sergi/devops_diploma/devops-exam-infra/ansible/files/kubeconfig
+if [ -f "$KC" ]; then
+  sed -i "s#server: https://.*:6443#server: https://${PUBLIC_IP}:6443#" "$KC"
+fi
 sleep 2
-kubectl --kubeconfig=/mnt/c/Users/sergi/devops_diploma/devops-exam-infra/ansible/files/kubeconfig get nodes || true
+kubectl --kubeconfig="$KC" get nodes || true

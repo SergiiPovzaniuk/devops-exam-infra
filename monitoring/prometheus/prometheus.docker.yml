@@ -17,21 +17,15 @@ scrape_configs:
 
   - job_name: node
     static_configs:
-      - targets: ["192.168.1.80:9100"]
-        labels:
-          instance: "jenkins"
-      - targets: ["192.168.1.70:9100"]
-        labels:
-          instance: "raspberrypi"
-      - targets: ["63.184.114.206:9100"]
+      - targets: ["52.59.86.56:9100"]
         labels:
           instance: "exam-cp"
           env: exam
-      - targets: ["18.184.182.88:9100"]
+      - targets: ["63.176.147.227:9100"]
         labels:
           instance: "exam-w1"
           env: exam
-      - targets: ["18.193.83.196:9100"]
+      - targets: ["3.71.181.214:9100"]
         labels:
           instance: "exam-w2"
           env: exam
@@ -39,7 +33,13 @@ scrape_configs:
   - job_name: devops-exam-app
     metrics_path: /metrics
     static_configs:
-      - targets: ["63.184.114.206:30080"]
+      - targets: ["52.59.86.56:30080"]
         labels:
           app: devops-exam-app
           env: exam
+          via: nodeport-cp
+      - targets: ["devops-exam-nlb-24ed18fcdecb3ba1.elb.eu-central-1.amazonaws.com:80"]
+        labels:
+          app: devops-exam-app
+          env: exam
+          via: nlb

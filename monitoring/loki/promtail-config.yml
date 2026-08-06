@@ -6,21 +6,20 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://LOKI_HOST:3100/loki/api/v1/push
+  - url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: system
-    static_configs:
-      - targets: [localhost]
-        labels:
-          job: varlogs
-          host: HOSTNAME
-          __path__: /var/log/*.log
-
-  - job_name: containers
-    static_configs:
-      - targets: [localhost]
-        labels:
-          job: containers
-          host: HOSTNAME
-          __path__: /var/log/containers/*.log
+  - job_name: kubernetes-pods
+    kubernetes_sd_configs:
+      - role: pod
+    pipeline_stages:
+      - cri: {}
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        target_label: app

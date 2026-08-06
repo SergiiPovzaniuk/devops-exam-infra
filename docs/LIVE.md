@@ -4,11 +4,11 @@
 
 | Role | Public IP | Private IP |
 |------|-----------|------------|
-| control-plane | 63.184.114.206 | 10.42.1.175 |
-| worker-1 | 18.184.182.88 | 10.42.1.163 |
-| worker-2 | 18.193.83.196 | 10.42.1.223 |
+| control-plane | 52.59.86.56 | 10.42.1.75 |
+| worker-1 | 63.176.147.227 | 10.42.1.182 |
+| worker-2 | 3.71.181.214 | 10.42.1.56 |
 
-- **App (NLB):** http://devops-exam-nlb-a45db2ad02c873b8.elb.eu-central-1.amazonaws.com
+- **App (NLB):** http://devops-exam-nlb-24ed18fcdecb3ba1.elb.eu-central-1.amazonaws.com
 - NodePort debug: `http://<node-ip>:30080`
 - SSH: `ssh -i ~/.ssh/devops-exam ubuntu@<public-ip>`
 - Kubeconfig: `ansible/files/kubeconfig`
@@ -23,7 +23,7 @@
 | Prometheus | http://192.168.32.80:9090 |
 | Grafana | http://192.168.32.80:3000 |
 | Alertmanager | http://192.168.32.80:9093 |
-| Loki | http://192.168.32.80:3100 |
+| Loki | http://192.168.32.80:3100 (local) / cluster NodePort http://52.59.86.56:31000 |
 
 ## CI/CD branches
 
@@ -41,5 +41,5 @@
 ## Demo
 
 ```bash
-./scripts/demo_curl.sh http://devops-exam-nlb-a45db2ad02c873b8.elb.eu-central-1.amazonaws.com
+./scripts/demo_curl.sh "$(cd terraform/envs/exam && terraform output -raw app_url)"
 ```

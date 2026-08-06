@@ -8,11 +8,11 @@ cp -a /mnt/c/Users/sergi/devops_diploma/devops-exam-infra "$HOME/devops-exam-inf
 chmod -R go-w "$HOME/devops-exam-infra/ansible"
 cat > "$HOME/devops-exam-infra/ansible/inventory/hosts.ini" <<EOF
 [control_plane]
-cp ansible_host=63.184.114.206 private_ip=10.42.1.175
+cp ansible_host=52.59.86.56 private_ip=10.42.1.75
 
 [workers]
-w1 ansible_host=18.184.182.88 private_ip=10.42.1.163
-w2 ansible_host=18.193.83.196 private_ip=10.42.1.223
+w1 ansible_host=63.176.147.227 private_ip=10.42.1.182
+w2 ansible_host=3.71.181.214 private_ip=10.42.1.56
 
 [k8s:children]
 control_plane

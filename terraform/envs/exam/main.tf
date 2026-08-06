@@ -87,6 +87,14 @@ resource "aws_security_group" "k8s" {
   }
 
   ingress {
+    description = "Loki NodePort for Grafana"
+    from_port   = 31000
+    to_port     = 31000
+    protocol    = "tcp"
+    cidr_blocks = [var.monitoring_cidr, var.ssh_cidr]
+  }
+
+  ingress {
     description = "kubelet metrics"
     from_port   = 10250
     to_port     = 10250

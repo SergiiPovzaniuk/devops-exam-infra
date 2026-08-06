@@ -39,6 +39,12 @@
     port: "9100"
     proto: tcp
 
+- name: Allow Loki NodePort
+  ufw:
+    rule: allow
+    port: "31000"
+    proto: tcp
+
 - name: Allow flannel / cluster overlay
   ufw:
     rule: allow
